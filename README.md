@@ -40,6 +40,29 @@ Task:
 - In the table above, the **Products column** contains multiple values, which violates **1NF**.
 - **Write an SQL query** to transform this table into **1NF**, ensuring that each row represents a single product for an order
 
+## Answer 
+
+SQL Query (for SQL Server with STRING_SPLIT):
+
+-- Assuming original table is named ProductDetail
+
+SELECT
+
+    OrderID,
+    
+    CustomerName,
+    
+    LTRIM(RTRIM(value)) AS Product
+    
+FROM
+
+    ProductDetail
+    
+CROSS APPLY 
+
+    STRING_SPLIT(Products, ',');
+
+
 --- 
 
 ### Question 2 Achieving 2NF (Second Normal Form) 🧩
@@ -58,6 +81,53 @@ Task:
 - In the table above, the **CustomerName** column depends on **OrderID** (a partial dependency), which violates **2NF**. 
 
 - Write an SQL query to transform this table into **2NF** by removing partial dependencies. Ensure that each non-key column fully depends on the entire primary key.
+## answer:
+Break into Two Tables
+We’ll split the data into:
+
+Orders — stores OrderID and CustomerName
+
+OrderItems — stores OrderID, Product, and Quantity
+
+# create orders table
+
+CREATE TABLE Orders (
+
+    OrderID INT PRIMARY KEY,
+    
+    CustomerName VARCHAR(100)
+    
+);
+
+INSERT INTO Orders (OrderID, CustomerName)
+
+SELECT DISTINCT OrderID, CustomerName
+
+FROM OrderDetails;
+
+# create orderitems table
+
+CREATE TABLE OrderItems (
+
+    OrderID INT,
+    
+    Product VARCHAR(100),
+    
+    Quantity INT,
+    
+    PRIMARY KEY (OrderID, Product),
+    
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+    
+);
+
+INSERT INTO OrderItems (OrderID, Product, Quantity)
+
+SELECT OrderID, Product, Quantity
+
+FROM OrderDetails;
+
+
 
 ---
 Good luck 🚀
