@@ -80,21 +80,19 @@ FROM ProductDetail
 
 CROSS APPLY STRING_SPLIT(Products, ',');
 
-| OrderID   | CustomerName   | Product  |
+| OrderID      | CustomerName      | Product  |
 
-|           |                |          |
+| 101          | John Doe          | Laptop   |
 
-| 101       | John Doe       | Laptop   |
+| 101          | John Doe          | Mouse    |
 
-| 101       | John Doe       | Mouse    |
+| 102          | Jane Smith        | Tablet   |
 
-| 102       | Jane Smith     | Tablet   |
+| 102          | Jane Smith        | Keyboard |
 
-| 102       | Jane Smith     | Keyboard |
+| 102          | Jane Smith        | Mouse    |
 
-| 102       | Jane Smith     | Mouse    |
-
-| 103       | Emily Clark    | Phone    |
+| 103          | Emily Clark       | Phone    |
 
 
 
