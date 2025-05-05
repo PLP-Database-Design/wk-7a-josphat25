@@ -122,39 +122,24 @@ OrderItems — stores OrderID, Product, and Quantity
 
 # create orders table
 
-CREATE TABLE Orders (
+SELECT DISTINCT
 
-    OrderID INT PRIMARY KEY,
+    OrderID,
     
-    CustomerName VARCHAR(100)
+    CustomerName
     
-);
-
-INSERT INTO Orders (OrderID, CustomerName)
-
-SELECT DISTINCT OrderID, CustomerName
-
 FROM OrderDetails;
+
 
 # create orderitems table
 
-CREATE TABLE OrderItems (
-
-    OrderID INT,
-    
-    Product VARCHAR(100),
-    
-    Quantity INT,
-    
-    PRIMARY KEY (OrderID, Product),
-    
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
-    
-);
 
 INSERT INTO OrderItems (OrderID, Product, Quantity)
 
-SELECT OrderID, Product, Quantity
+SELECT 
+   OrderID,
+   Product, 
+   Quantity
 
 FROM OrderDetails;
 
