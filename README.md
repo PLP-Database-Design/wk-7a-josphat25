@@ -42,30 +42,63 @@ Task:
 
 ## Answer 
 
-SQL Query (for SQL Server with STRING_SPLIT):
+# option1 using unnest and string_to_array
 
--- Assuming original table is named ProductDetail
-
-SELECT
+SELECT  
 
     OrderID,
     
     CustomerName,
     
-    LTRIM(RTRIM(value)) AS Product
+    TRIM(product) AS Product
     
-FROM
+FROM (
 
-    ProductDetail
+    SELECT 
     
-CROSS APPLY 
+        OrderID,
+        
+        CustomerName,
+        
+        unnest(string_to_array(Products, ',')) AS product
+        
+    FROM ProductDetail
+    
+) AS normalized;
 
-    STRING_SPLIT(Products, ',');
+# option 2 using STRING_SPLIT 
+
+SELECT 
+
+    OrderID,
+    
+    CustomerName,
+    
+    TRIM(value) AS Product
+    
+FROM ProductDetail
+
+CROSS APPLY STRING_SPLIT(Products, ',');
+
+| OrderID   | CustomerName   | Product  |
+
+|           |                |          |
+
+| 101       | John Doe       | Laptop   |
+
+| 101       | John Doe       | Mouse    |
+
+| 102       | Jane Smith     | Tablet   |
+
+| 102       | Jane Smith     | Keyboard |
+
+| 102       | Jane Smith     | Mouse    |
+
+| 103       | Emily Clark    | Phone    |
 
 
---- 
 
-### Question 2 Achieving 2NF (Second Normal Form) 🧩
+### Question 2 Achieving 2NF (Second Normal Form) 
 
 - You are given the following table **OrderDetails**, which is already in **1NF** but still contains partial dependencies:
 
